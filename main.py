@@ -5,9 +5,12 @@ from monster import Monster
 import os
 import updater
 
-player = Player()
+#function def
 
+#function to initialize world
 def createWorld():
+
+    #set up rooms
     hall1 = Room("You are in Hallway",1,False)
     a1 = Room("You are in room 1",1,False)
     b1 = Room("You are in room 2",1,False)
@@ -19,14 +22,22 @@ def createWorld():
     Room.connectRooms(c1, "hall1", hall1, "c1")
     Room.connectRooms(d1, "hall1", hall1, "d1")
     Room.connectRooms(e1, "hall1", hall1, "e1")
+
+    #set up items
     i = Item("Rock", "This is just a rock.")
     i.putInRoom(b1)
+
+    #set up player's location
     player.location = hall1
+
+    #set up monsters
     Monster("Bob the monster", 20, b1)
 
+#function to clear screen
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+#function to print current situation info
 def printSituation():
     clear()
     print(player.location.desc)
@@ -46,31 +57,53 @@ def printSituation():
         print(e)
     print()
 
+#helper function
 def showHelp():
     clear()
-    print("go <direction> -- moves you in the given direction")
+    print("go <place_name> -- moves you to the given place")
     print("inventory -- opens your inventory")
     print("pickup <item> -- picks up the item")
+    print("me -- show your current status")
+    print("attack <monster_name> -- attack the given monster")
+    print("exit -- quit the game")
     print()
     input("Press enter to continue...")
 
+#function def end
 
+#game start
 
+#create a player
+player = Player()
+
+#create the world
 createWorld()
 playing = True
 while playing and player.alive:
+
+    #show current situation info
     printSituation()
+
+    #control variables initialization
     commandSuccess = False
     timePasses = False
+
+    #ask for player command
     while not commandSuccess:
         commandSuccess = True
         command = input("What now? ")
-        commandWords = command.split()
+        commandWords = command.split()  #split the commandWords into pieces by space
+
+        #"go <place_name>" --go to certain place
         if commandWords[0].lower() == "go":   #cannot handle multi-word directions
             player.goDirection(commandWords[1]) 
             timePasses = True
+
+        #"me" --show player status
         elif commandWords[0].lower() == "me":
             player.showStatus()
+
+        #"pickup <place_name>" --pickup items
         elif commandWords[0].lower() == "pickup":  #can handle multi-word objects
             targetName = command[7:]
             target = player.location.getItemByName(targetName)
@@ -79,12 +112,20 @@ while playing and player.alive:
             else:
                 print("No such item.")
                 commandSuccess = False
+
+        #"inventory" --show inventory
         elif commandWords[0].lower() == "inventory":
             player.showInventory()        
+
+        #"help" --show commands instruction
         elif commandWords[0].lower() == "help":
             showHelp()
+
+        #"exit" --exit game
         elif commandWords[0].lower() == "exit":
             playing = False
+
+        #"attack <monster_name> --attack certain monster
         elif commandWords[0].lower() == "attack":
             targetName = command[7:]
             target = player.location.getMonsterByName(targetName)
@@ -93,11 +134,15 @@ while playing and player.alive:
             else:
                 print("No such monster.")
                 commandSuccess = False
+
+        #invalid command
         else:
             print("Not a valid command")
             commandSuccess = False
-    if timePasses == True:
-        updater.updateAll()
+
+    #update something after moving
+    #if timePasses == True:
+        #updater.updateAll()
 
     
 
