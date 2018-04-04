@@ -31,10 +31,12 @@ class Player:
         print()
         input("Press enter to continue...")
         
+    #modify status to certain value
     def modStatus(self, key, value):
         self.attributes[key] = value 
         print('{} is changed to {}'.format(key, self.attributes[key]))
 
+    #increase status to certain value
     def increaseStatus(self, key, value):
             self.attributes[key] += value
             if value > 0:
