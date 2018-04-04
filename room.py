@@ -1,11 +1,13 @@
 import random
 
 class Room:
-    def __init__(self, description):
+    def __init__(self, description, level,teleport):
         self.desc = description
         self.monsters = []
         self.exits = []
         self.items = []
+        self.level = level 
+        self.teleport = teleport
     def addExit(self, exitName, destination):
         self.exits.append([exitName, destination])
     def getDestination(self, direction):
