@@ -31,6 +31,19 @@ class Player:
         print()
         input("Press enter to continue...")
         
+    def modStatus(self, key, value):
+        self.attributes[key] = value 
+        print('{} is changed to {}'.format(key, self.attributes[key]))
+
+    def increaseStatus(self, key, value):
+            self.attributes[key] += value
+            if value > 0:
+                print('{} is increased by {}'.format(key, value))
+            elif value < 0:
+                print('{} is decreased by {}'.format(key, value))
+            else:
+                print('{} is not changed'.format(key))
+
 
     #move player
     def goDirection(self, direction):
