@@ -10,16 +10,23 @@ class Player:
         self.items = []
 
         #player attributes
-        self.health = 50
-        self.mana = 20
-        self.exp = 0
-        self.level = 1
-        self.money = 0
-        self.strength = 0
-        self.defend = 0
-        self.agility = 0
+        self.attributes = {
+            'hp':100,
+            'mp':20,
+            'exp':0,
+            'level':1,
+            'money':0,
+            'strength':0,
+            'defend':0,
+            'agility':0,
+        }
 
         self.alive = True
+
+    #show status
+    #def showStatus(self):
+        
+        
 
     #move player
     def goDirection(self, direction):
@@ -46,12 +53,12 @@ class Player:
         clear()
         print("You are attacking " + mon.name)
         print()
-        print("Your health is " + str(self.health) + ".")
+        print("Your health is " + str(self.attributes['hp']) + ".")
         print(mon.name + "'s health is " + str(mon.health) + ".")
         print()
-        if self.health > mon.health:
-            self.health -= mon.health
-            print("You win. Your health is now " + str(self.health) + ".")
+        if self.attributes['hp'] > mon.health:
+            self.attributes['hp'] -= mon.health
+            print("You win. Your health is now " + str(self.attributes['hp']) + ".")
             mon.die()
         else:
             print("You lose.")
