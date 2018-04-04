@@ -24,8 +24,11 @@ def createWorld():
     Room.connectRooms(e1, "hall1", hall1, "e1")
 
     #set up items
-    i = Item("Rock", "This is just a rock.")
-    i.putInRoom(b1)
+    Rock = Item("Rock", "This is just a rock.", {})
+    Rock.putInRoom(b1)
+
+    Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10})
+    Bandage.putInRoom(c1)
 
     #set up player's location
     player.location = hall1
@@ -42,16 +45,22 @@ def printSituation():
     clear()
     print(player.location.desc)
     print()
+
+    #monster info
     if player.location.hasMonsters():
         print("This room contains the following monsters:")
         for m in player.location.monsters:
             print(m.name)
         print()
+
+    #item info
     if player.location.hasItems():
         print("This room contains the following items:")
         for i in player.location.items:
             print(i.name)
         print()
+
+    #exit info
     print("You can go in the following directions:")
     for e in player.location.exitNames():
         print(e)
@@ -62,7 +71,10 @@ def showHelp():
     clear()
     print("go <place_name> -- moves you to the given place")
     print("inventory -- opens your inventory")
-    print("pickup <item> -- picks up the item")
+    print("iteminfo <item_name> -- check info of given item in your inventory")
+    print("inspect <item_name> -- inspect given item in current room")
+    print("pickup <item_name> -- picks up the item")
+    print("use <item_name> -- use item in your inventory")
     print("me -- show your current status")
     print("attack <monster_name> -- attack the given monster")
     print("exit -- quit the game")
@@ -102,8 +114,18 @@ while playing and player.alive:
         #"me" --show player status
         elif commandWords[0].lower() == "me":
             player.showStatus()
+        
+        #"inspect <item_name>"
+        elif commandWords[0].lower() == "inspect":
+            targetName = command[8:]
+            target = player.location.getItemByName(targetName)
+            if target != False:
+                target.describe()
+            else:
+                print("No such item.")
+                commandSuccess = False
 
-        #"pickup <place_name>" --pickup items
+        #"pickup <item_name>" --pickup items
         elif commandWords[0].lower() == "pickup":  #can handle multi-word objects
             targetName = command[7:]
             target = player.location.getItemByName(targetName)
@@ -117,6 +139,28 @@ while playing and player.alive:
         elif commandWords[0].lower() == "inventory":
             player.showInventory()        
 
+        #"iteminfo <item_name>" --show info of certain item in inventory
+        elif commandWords[0].lower() == "iteminfo":
+            itemName = command[9:]
+            item = player.getItemByName(itemName)
+            if item != False:
+                item.describe()
+            else:
+                print("No such item.")
+                commandSuccess = False
+            
+        #"use <item_name>" --use item
+        elif commandWords[0].lower() == "use":
+            itemName = command[4:]
+            item = player.getItemByName(itemName)
+            if item != False:
+                for u in item.usage:
+                    if item.usage[u] != 0:
+                        player.increaseStatus(u, item.usage[u])
+            else:
+                print("No such item.")
+                commandSuccess = False
+            
         #"help" --show commands instruction
         elif commandWords[0].lower() == "help":
             showHelp()
@@ -125,7 +169,10 @@ while playing and player.alive:
         elif commandWords[0].lower() == "exit":
             playing = False
 
-        #"attack <monster_name> --attack certain monster
+        #"observe <monster_name>" --observe certain monster
+        
+
+        #"attack <monster_name>" --attack certain monster
         elif commandWords[0].lower() == "attack":
             targetName = command[7:]
             target = player.location.getMonsterByName(targetName)

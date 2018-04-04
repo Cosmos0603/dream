@@ -1,23 +1,23 @@
 import random
 
 class Room:
-    def __init__(self, description, level,teleport):
+    def __init__(self, description, layer, isPortal):
         self.desc = description
         self.monsters = []
         self.exits = []
         self.items = []
-        self.level = level 
-        self.teleport = teleport
+        self.layer = layer 
+        self.isPortal = isPortal
     def addExit(self, exitName, destination):
         self.exits.append([exitName, destination])
     def getDestination(self, direction):
         for e in self.exits:
             if e[0] == direction:
                 return e[1]
-    def connectRooms(room1, dir1, room2, dir2):
-        #creates "dir1" exit from room1 to room2 and vice versa
-        room1.addExit(dir1, room2)
-        room2.addExit(dir2, room1)
+    def connectRooms(room1, exit1, room2, exit2):
+        #creates "exit1" exit from room1 to room2 and vice versa
+        room1.addExit(exit1, room2)
+        room2.addExit(exit2, room1)
     def exitNames(self):
         return [x[0] for x in self.exits]
     def addItem(self, item):

@@ -18,13 +18,15 @@ class Player:
             'money':0,
             'strength':0,
             'defend':0,
-            'agility':0,
+            'agility':0
         }
 
         self.alive = True
 
     #show status
     def showStatus(self):
+        clear()
+        print("Player Status:")
         print()
         for key in self.attributes:
             print('{}: {}'.format(key, self.attributes[key]))
@@ -33,18 +35,24 @@ class Player:
         
     #modify status to certain value
     def modStatus(self, key, value):
+        clear()
         self.attributes[key] = value 
         print('{} is changed to {}'.format(key, self.attributes[key]))
+        print()
+        input("Press enter to continue...")
 
     #increase status to certain value
     def increaseStatus(self, key, value):
-            self.attributes[key] += value
-            if value > 0:
-                print('{} is increased by {}'.format(key, value))
-            elif value < 0:
-                print('{} is decreased by {}'.format(key, value))
-            else:
-                print('{} is not changed'.format(key))
+        clear()
+        self.attributes[key] += value
+        if value > 0:
+            print('{} is increased by {}'.format(key, value))
+        elif value < 0:
+            print('{} is decreased by {}'.format(key, value))
+        else:
+            print('{} is not changed'.format(key))
+        print()
+        input("Press enter to continue...")
 
 
     #move player
@@ -66,6 +74,13 @@ class Player:
             print(i.name)
         print()
         input("Press enter to continue...")
+
+    #find item in inventory
+    def getItemByName(self, name):
+        for i in self.items:
+            if name.lower() == i.name.lower():
+                return i
+        return False
 
     #attack monster
     def attackMonster(self, mon):
