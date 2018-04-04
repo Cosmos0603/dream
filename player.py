@@ -4,20 +4,34 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 class Player:
-    #player attributes
+    #player initialization
     def __init__(self):
         self.location = None
         self.items = []
+
+        #player attributes
         self.health = 50
+        self.mana = 20
+        self.exp = 0
+        self.level = 1
+        self.money = 0
+        self.strength = 0
+        self.defend = 0
+        self.agility = 0
+
         self.alive = True
 
     #move player
     def goDirection(self, direction):
         self.location = self.location.getDestination(direction)
+
+    #pickup items
     def pickup(self, item):
         self.items.append(item)
         item.loc = self
         self.location.removeItem(item)
+
+    #show items in inventory
     def showInventory(self):
         clear()
         print("You are currently carrying:")
@@ -26,6 +40,8 @@ class Player:
             print(i.name)
         print()
         input("Press enter to continue...")
+
+    #attack monster
     def attackMonster(self, mon):
         clear()
         print("You are attacking " + mon.name)
