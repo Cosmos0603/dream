@@ -69,6 +69,8 @@ while playing and player.alive:
         if commandWords[0].lower() == "go":   #cannot handle multi-word directions
             player.goDirection(commandWords[1]) 
             timePasses = True
+        elif commandWords[0].lower() == "me":
+            player.showStatus()
         elif commandWords[0].lower() == "pickup":  #can handle multi-word objects
             targetName = command[7:]
             target = player.location.getItemByName(targetName)

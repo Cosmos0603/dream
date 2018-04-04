@@ -24,8 +24,12 @@ class Player:
         self.alive = True
 
     #show status
-    #def showStatus(self):
-        
+    def showStatus(self):
+        print()
+        for key in self.attributes:
+            print('{}: {}'.format(key, self.attributes[key]))
+        print()
+        input("Press enter to continue...")
         
 
     #move player
