@@ -10,7 +10,7 @@ class Player:
         self.items = []
 
         #player attributes
-        self.health = 50
+        self.health = 100
         self.mana = 20
         self.exp = 0
         self.level = 1
