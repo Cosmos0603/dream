@@ -8,6 +8,7 @@ import updater
 player = Player()
 
 def createWorld():
+    hall = Room("You are in Hallway")
     a = Room("You are in room 1")
     b = Room("You are in room 2")
     c = Room("You are in room 3")
