@@ -12,7 +12,6 @@ class Player:
         self.alive = True
 
     #move player
-    #gai le 
     def goDirection(self, direction):
         self.location = self.location.getDestination(direction)
     def pickup(self, item):
