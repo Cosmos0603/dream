@@ -11,6 +11,7 @@ class Player:
         self.health = 50
         self.alive = True
 
+    #move player
     def goDirection(self, direction):
         self.location = self.location.getDestination(direction)
     def pickup(self, item):
