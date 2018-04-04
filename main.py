@@ -8,19 +8,21 @@ import updater
 player = Player()
 
 def createWorld():
-    hall = Room("You are in Hallway")
-    a = Room("You are in room 1")
-    b = Room("You are in room 2")
-    c = Room("You are in room 3")
-    d = Room("You are in room 4")
-    Room.connectRooms(a, "east", b, "west")
-    Room.connectRooms(c, "east", d, "west")
-    Room.connectRooms(a, "north", c, "south")
-    Room.connectRooms(b, "north", d, "south")
+    hall1 = Room("You are in Hallway",1,False)
+    a1 = Room("You are in room 1",1,False)
+    b1 = Room("You are in room 2",1,False)
+    c1 = Room("You are in room 3",1,False)
+    d1 = Room("You are in room 4",1,False)
+    e1 = Room("You are in room 5",1,False)
+    Room.connectRooms(a1, "hall1", hall1, "a1")
+    Room.connectRooms(b1, "hall1", hall1, "b1")
+    Room.connectRooms(c1, "hall1", hall1, "c1")
+    Room.connectRooms(d1, "hall1", hall1, "d1")
+    Room.connectRooms(e1, "hall1", hall1, "e1")
     i = Item("Rock", "This is just a rock.")
-    i.putInRoom(b)
-    player.location = a
-    Monster("Bob the monster", 20, b)
+    i.putInRoom(b1)
+    player.location = hall1
+    Monster("Bob the monster", 20, b1)
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
