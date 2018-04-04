@@ -12,6 +12,7 @@ class Player:
         self.alive = True
 
     #move player
+    # ni kan kan 
     def goDirection(self, direction):
         self.location = self.location.getDestination(direction)
     def pickup(self, item):
