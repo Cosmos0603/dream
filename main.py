@@ -69,15 +69,30 @@ def printSituation():
 #helper function
 def showHelp():
     clear()
-    print("go <place_name> -- moves you to the given place")
-    print("inventory -- opens your inventory")
-    print("iteminfo <item_name> -- check info of given item in your inventory")
-    print("inspect <item_name> -- inspect given item in current room")
-    print("pickup <item_name> -- picks up the item")
-    print("use <item_name> -- use item in your inventory")
+    print("Info: ")
     print("me -- show your current status")
+    print("inventory -- show items in your inventory")
+    print("inspect <item_name> -- inspect given item in current room")
+    print("iteminfo <item_name> -- check info of given item in your inventory")
+
+    print()
+    print("Movement: ")
+    print("go <place_name> -- moves you to the given place")
+
+    print()
+    print("Item: ")
+    print("pickup <item_name> -- pick up the item")
+    print("drop <item_name> -- drop item in your inventory")
+    print("use <item_name> -- use item in your inventory")
+
+    print()
+    print("Monster: ")
     print("attack <monster_name> -- attack the given monster")
+
+    print()
+    print("Gameplay: ")
     print("exit -- quit the game")
+
     print()
     input("Press enter to continue...")
 
@@ -131,6 +146,16 @@ while playing and player.alive:
             target = player.location.getItemByName(targetName)
             if target != False:
                 player.pickup(target)
+            else:
+                print("No such item.")
+                commandSuccess = False
+
+        #"drop <item_name>" --drop items
+        elif commandWords[0].lower() == "drop":
+            itemName = command[5:]
+            item = player.getItemByName(itemName)
+            if item != False:
+                player.drop(item)
             else:
                 print("No such item.")
                 commandSuccess = False

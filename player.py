@@ -59,19 +59,38 @@ class Player:
     def goDirection(self, direction):
         self.location = self.location.getDestination(direction)
 
-    #pickup items
+    #pickup item
     def pickup(self, item):
         self.items.append(item)
         item.loc = self
         self.location.removeItem(item)
+        clear()
+        print("You have picked up {}".format(item.name))
+        print()
+        input("Press enter to continue...")
+
+
+    #drop item
+    def drop(self, item):
+        self.location.addItem(item)
+        item.loc = self.location
+        self.items.remove(item)
+        clear()
+        print("You have dropped {}".format(item.name))
+        print()
+        input("Press enter to continue...")
 
     #show items in inventory
     def showInventory(self):
         clear()
         print("You are currently carrying:")
         print()
-        for i in self.items:
-            print(i.name)
+        if len(self.items) == 0:
+            print("Nothing!")
+            print("Go find something, noob!")
+        else:
+            for i in self.items:
+                print(i.name)
         print()
         input("Press enter to continue...")
 
