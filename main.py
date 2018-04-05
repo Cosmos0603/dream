@@ -157,6 +157,7 @@ while playing and player.alive:
                 for u in item.usage:
                     if item.usage[u] != 0:
                         player.increaseStatus(u, item.usage[u])
+                player.deleteItem(item)
             else:
                 print("No such item.")
                 commandSuccess = False

@@ -82,6 +82,10 @@ class Player:
                 return i
         return False
 
+    #delete item in inventory
+    def deleteItem(self, item):
+        self.items.remove(item)
+
     #attack monster
     def attackMonster(self, mon):
         clear()
