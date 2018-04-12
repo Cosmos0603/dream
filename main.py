@@ -11,6 +11,8 @@ import updater
 
 Roomlist = []
 
+#setup world
+
 def createWorld():
 
     #set up rooms
