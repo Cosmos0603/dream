@@ -11,17 +11,63 @@ import updater
 def createWorld():
 
     #set up rooms
-    hall1 = Room("You are in Hallway",1,False)
-    a1 = Room("You are in room 1",1,False)
-    b1 = Room("You are in room 2",1,False)
-    c1 = Room("You are in room 3",1,False)
-    d1 = Room("You are in room 4",1,False)
-    e1 = Room("You are in room 5",1,False)
+    hall1 = Room("hall1","This is level 1. You are in Hallway",1,False)
+    a1 = Room("a1","This is level 1. You are in room 1",1,False)
+    b1 = Room("b1","This is level 1. You are in room 2",1,False)
+    c1 = Room("c1","This is level 1. You are in room 3",1,False)
+    d1 = Room("d1","This is level 1. You are in room 4",1,True)
+    e1 = Room("e1","This is level 1. You are in room 5",1,False)
     Room.connectRooms(a1, "hall1", hall1, "a1")
     Room.connectRooms(b1, "hall1", hall1, "b1")
     Room.connectRooms(c1, "hall1", hall1, "c1")
     Room.connectRooms(d1, "hall1", hall1, "d1")
     Room.connectRooms(e1, "hall1", hall1, "e1")
+    hall2 = Room("hall2","This is level 2. You are in Hallway",2,False)
+    a2 = Room("a2","This is level 2. You are in room 1",2,False)
+    b2 = Room("b2","This is level 2. You are in room 2",2,True)
+    c2 = Room("c2","This is level 2. You are in room 3",2,False)
+    d2 = Room("d2","This is level 2. You are in room 4",2,False)
+    e2 = Room("e2","This is level 2. You are in room 5",2,False)
+    Room.connectRooms(a2, "hall2", hall2, "a2")
+    Room.connectRooms(b2, "hall2", hall2, "b2")
+    Room.connectRooms(c2, "hall2", hall2, "c2")
+    Room.connectRooms(d2, "hall2", hall2, "d2")
+    Room.connectRooms(e2, "hall2", hall2, "e2")
+    hall3 = Room("hall3","This is level 3. You are in Hallway",3,False)
+    a3 = Room("a3","This is level 3. You are in room 1",3,False)
+    b3 = Room("b3","This is level 3. You are in room 2",3,False)
+    c3 = Room("c3","This is level 3. You are in room 3",3,False)
+    d3 = Room("d3","This is level 3. You are in room 4",3,False)
+    e3 = Room("e3","This is level 3. You are in room 5",3,True)
+    Room.connectRooms(a3, "hall3", hall3, "a3")
+    Room.connectRooms(b3, "hall3", hall3, "b3")
+    Room.connectRooms(c3, "hall3", hall3, "c3")
+    Room.connectRooms(d3, "hall3", hall3, "d3")
+    Room.connectRooms(e3, "hall3", hall3, "e3")
+    hall4 = Room("hall4","This is level 4. You are in Hallway",4,False)
+    a4 = Room("a4","This is level 4. You are in room 1",4,True)
+    b4 = Room("b4","This is level 4. You are in room 2",4,False)
+    c4 = Room("c4","This is level 4. You are in room 3",4,False)
+    d4 = Room("d4","This is level 4. You are in room 4",4,False)
+    e4 = Room("e4","This is level 4. You are in room 5",4,False)
+    Room.connectRooms(a4, "hall4", hall4, "a4")
+    Room.connectRooms(b4, "hall4", hall4, "b4")
+    Room.connectRooms(c4, "hall4", hall4, "c4")
+    Room.connectRooms(d4, "hall4", hall4, "d4")
+    Room.connectRooms(e4, "hall4", hall4, "e4")
+    hall5 = Room("hall5","This is level 5. You are in Hallway",5,False)
+    a5 = Room("a5","This is level 5. You are in room 1",5,False)
+    b5 = Room("b5","This is level 5. You are in room 2",5,False)
+    c5 = Room("c5","This is level 5. You are in room 3",5,False)
+    d5 = Room("d5","This is level 5. You are in room 4",5,False)
+    e5 = Room("e5","This is level 5. You are in room 5",5,False)
+    Room.connectRooms(a5, "hall5", hall5, "a5")
+    Room.connectRooms(b5, "hall5", hall5, "b5")
+    Room.connectRooms(c5, "hall5", hall5, "c5")
+    Room.connectRooms(d5, "hall5", hall5, "d5")
+    Room.connectRooms(e5, "hall5", hall5, "e5")
+    
+    
 
     #set up items
     Rock = Item("Rock", "This is just a rock.", {})
@@ -65,6 +111,16 @@ def printSituation():
     for e in player.location.exitNames():
         print(e)
     print()
+    #show hel[]
+    print("input 'help' to get more information")
+    print()
+
+#find the room 
+def getRoomByName(name):
+        for i in Roomlist:
+            if i.name.lower() == name.lower():
+                return i
+        return False
 
 #helper function
 def showHelp():
@@ -78,6 +134,7 @@ def showHelp():
     print()
     print("Movement: ")
     print("go <place_name> -- moves you to the given place")
+    print("teleport -- moves you to the upper level")
 
     print()
     print("Item: ")
@@ -105,6 +162,7 @@ player = Player()
 
 #create the world
 createWorld()
+Roomlist = [hall1,a1,b1,c1,d1,e1,hall2,a2,b2,c2,d2,e2,hall3,a3,b3,c3,d3,e3,hall4,a4,b4,c4,d4,e4,hall5,a5,b5,c5,d5,e5]
 playing = True
 while playing and player.alive:
 
@@ -125,6 +183,18 @@ while playing and player.alive:
         if commandWords[0].lower() == "go":   #cannot handle multi-word directions
             player.goDirection(commandWords[1]) 
             timePasses = True
+
+        elif commandWords[0].lower() == "teleport":
+            checking = player.location.isPortal
+            if checking != False:
+                print("A huge cyclone appears and you are blowed up to the sky~")
+                input("Press enter to tranverse!")
+                destName = "hall" + str(player.location.layer+1)
+                dest = getRoomByName(destName)
+                player.location = dest
+                print(player.location.desc)
+            else:
+                print("This room has no Portal. You can only teleport in a Portal room.")
 
         #"me" --show player status
         elif commandWords[0].lower() == "me":

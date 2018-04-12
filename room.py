@@ -1,7 +1,8 @@
 import random
 
 class Room:
-    def __init__(self, description, layer, isPortal):
+    def __init__(self, name, description, layer, isPortal):
+        self.name = name 
         self.desc = description
         self.monsters = []
         self.exits = []
