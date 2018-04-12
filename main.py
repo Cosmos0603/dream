@@ -7,7 +7,7 @@ import updater
 
 #function def
 
-#function to initialize world
+#setup world
 def createWorld():
 
     #set up rooms
