@@ -8,6 +8,9 @@ import updater
 #function def
 
 #function to initialize world
+
+Roomlist = []
+
 def createWorld():
 
     #set up rooms
@@ -66,7 +69,37 @@ def createWorld():
     Room.connectRooms(c5, "hall5", hall5, "c5")
     Room.connectRooms(d5, "hall5", hall5, "d5")
     Room.connectRooms(e5, "hall5", hall5, "e5")
-    
+    Roomlist.append(hall1)
+    Roomlist.append(hall2)
+    Roomlist.append(hall3)
+    Roomlist.append(hall4)
+    Roomlist.append(hall5)
+    Roomlist.append(a1)
+    Roomlist.append(b1)
+    Roomlist.append(c1)
+    Roomlist.append(d1)
+    Roomlist.append(e1)
+    Roomlist.append(a2)
+    Roomlist.append(b2)
+    Roomlist.append(c2)
+    Roomlist.append(d2)
+    Roomlist.append(e2)
+    Roomlist.append(a3)
+    Roomlist.append(b3)
+    Roomlist.append(c3)
+    Roomlist.append(d3)
+    Roomlist.append(e3)
+    Roomlist.append(a4)
+    Roomlist.append(b4)
+    Roomlist.append(c4)
+    Roomlist.append(d4)
+    Roomlist.append(e4)
+    Roomlist.append(a5)
+    Roomlist.append(b5)
+    Roomlist.append(c5)
+    Roomlist.append(d5)
+    Roomlist.append(e5)
+
     
 
     #set up items
@@ -115,12 +148,7 @@ def printSituation():
     print("input 'help' to get more information")
     print()
 
-#find the room 
-def getRoomByName(name):
-        for i in Roomlist:
-            if i.name.lower() == name.lower():
-                return i
-        return False
+
 
 #helper function
 def showHelp():
@@ -153,6 +181,12 @@ def showHelp():
     print()
     input("Press enter to continue...")
 
+def getRoomByName(name, L):
+        for i in L:
+            if i.name.lower() == name.lower():
+                return i
+        return False
+
 #function def end
 
 #game start
@@ -162,7 +196,6 @@ player = Player()
 
 #create the world
 createWorld()
-Roomlist = [hall1,a1,b1,c1,d1,e1,hall2,a2,b2,c2,d2,e2,hall3,a3,b3,c3,d3,e3,hall4,a4,b4,c4,d4,e4,hall5,a5,b5,c5,d5,e5]
 playing = True
 while playing and player.alive:
 
@@ -189,12 +222,18 @@ while playing and player.alive:
             if checking != False:
                 print("A huge cyclone appears and you are blowed up to the sky~")
                 input("Press enter to tranverse!")
-                destName = "hall" + str(player.location.layer+1)
-                dest = getRoomByName(destName)
+                destName = "hall" + str(player.location.layer + 1)
+                dest = getRoomByName(destName, Roomlist)
                 player.location = dest
-                print(player.location.desc)
+                print()
+                print("Welcome to level "+str(player.location.layer))
+                print("The mosters are more challenging here. Be careful.")
+                input("Press enter to continue...")
+                print()
             else:
+                clear()
                 print("This room has no Portal. You can only teleport in a Portal room.")
+                input("Press enter to continue...")
 
         #"me" --show player status
         elif commandWords[0].lower() == "me":
