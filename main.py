@@ -105,11 +105,26 @@ def createWorld():
     
 
     #set up items
-    Rock = Item("Rock", "This is just a rock.", {})
+    Rock = Item("Rock", "This is just a rock.", {}, 1)
     Rock.putInRoom(b1)
 
-    Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10})
+    Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
     Bandage.putInRoom(c1)
+
+    Bandage1 = Item("Bandage1", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage1.putInRoom(c1)
+
+    Bandage2 = Item("Bandage2", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage2.putInRoom(c1)
+
+    Bandage3 = Item("Bandage3", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage3.putInRoom(c1)
+
+    Bandage4 = Item("Bandage4", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage4.putInRoom(c1)
+
+    Bandage5 = Item("Bandage5", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage5.putInRoom(c1)
 
     #set up player's location
     player.location = hall1
@@ -218,7 +233,7 @@ while playing and player.alive:
         if commandWords[0].lower() == "go":   #cannot handle multi-word directions
             player.goDirection(commandWords[1]) 
             timePasses = True
-
+        #"teleport" --tranverse to the upper layer
         elif commandWords[0].lower() == "teleport":
             checking = player.location.isPortal
             if checking != False:
@@ -232,6 +247,7 @@ while playing and player.alive:
                 print("The mosters are more challenging here. Be careful.")
                 input("Press enter to continue...")
                 print()
+                timePasses = True
             else:
                 clear()
                 print("This room has no Portal. You can only teleport in a Portal room.")

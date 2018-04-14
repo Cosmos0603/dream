@@ -5,14 +5,16 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 class Item:
-    def __init__(self, name, desc, usage):
+    def __init__(self, name, desc, usage,size):
         self.name = name
         self.desc = desc
         self.loc = None
         self.usage = usage
+        self.size = size
 
     def describe(self):
         clear()
+        print("This item occupies "+str(self.size)+ " size of the bag." )
         print(self.desc)
         for u in self.usage:
             if self.usage[u] != 0:

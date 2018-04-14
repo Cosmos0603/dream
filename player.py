@@ -8,6 +8,10 @@ class Player:
     def __init__(self):
         self.location = None
         self.items = []
+        self.bagsize = 5
+        self.curcarry = 0
+        #attackPattern: {name: [frequency, damage%, defense%] }
+        self.attackPattern = {"normal":[1,0.5,0.8]}
 
         #player attributes
         self.attributes = {
@@ -61,13 +65,21 @@ class Player:
 
     #pickup item
     def pickup(self, item):
-        self.items.append(item)
-        item.loc = self
-        self.location.removeItem(item)
-        clear()
-        print("You have picked up {}".format(item.name))
-        print()
-        input("Press enter to continue...")
+        if self.curcarry + item.size <= self.bagsize:
+            self.items.append(item)
+            self.curcarry = self.curcarry + item.size
+            item.loc = self
+            self.location.removeItem(item)
+            clear()
+            print("You have picked up {}".format(item.name))
+            print()
+            input("Press enter to continue...")
+        else:
+            clear()
+            print("Your bag is full. You can not pick up more items.")
+            print("You can drop items to pick up this item.")
+            print()
+            input("Press enter to continue")
 
 
     #drop item
@@ -75,6 +87,7 @@ class Player:
         self.location.addItem(item)
         item.loc = self.location
         self.items.remove(item)
+        self.curcarry = self.curcarry - item.size
         clear()
         print("You have dropped {}".format(item.name))
         print()
@@ -83,7 +96,9 @@ class Player:
     #show items in inventory
     def showInventory(self):
         clear()
-        print("You are currently carrying:")
+        print("You can at most carry "+str(self.bagsize)+" size of items.")
+        print()
+        print("You are currently carrying " + str(self.curcarry) + " size of items:")
         print()
         if len(self.items) == 0:
             print("Nothing!")
