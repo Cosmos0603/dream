@@ -104,8 +104,18 @@ class Player:
             print("Nothing!")
             print("Go find something, noob!")
         else:
+            itemnames = []
+            itemlist = []
             for i in self.items:
-                print(i.name)
+                if i.name not in itemnames:
+                    itemlist.append([i.name, 1])
+                    itemnames.append(i.name)
+                else:
+                    for k in itemlist:
+                        if k[0] == i.name:
+                            k[1] = k[1] + 1 
+            for j in itemlist:
+                print(str(j[0]) + " *" + str(j[1]))
         print()
         input("Press enter to continue...")
 

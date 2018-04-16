@@ -1,6 +1,8 @@
 from room import Room
 from player import Player
 from item import Item
+from item import Weapon 
+from item import Armor
 from monster import Monster
 import os
 import updater
@@ -111,6 +113,12 @@ def createWorld():
     Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
     Bandage.putInRoom(c1)
 
+    Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage.putInRoom(c1)
+
+    Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage.putInRoom(c1)
+
     Bandage1 = Item("Bandage1", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
     Bandage1.putInRoom(c1)
 
@@ -152,8 +160,18 @@ def printSituation():
     #item info
     if player.location.hasItems():
         print("This room contains the following items:")
+        itemnames = []
+        itemlist = []
         for i in player.location.items:
-            print(i.name)
+            if i.name not in itemnames:
+                itemlist.append([i.name, 1])
+                itemnames.append(i.name)
+            else:
+                for k in itemlist:
+                    if k[0] == i.name:
+                        k[1] = k[1] + 1 
+        for j in itemlist:
+            print(str(j[0]) + " *" + str(j[1]))
         print()
 
     #exit info
