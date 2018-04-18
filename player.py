@@ -11,20 +11,23 @@ class Player:
         self.bagsize = 5
         self.curcarry = 0
         #attackPattern: {name: [frequency, damage%, defense%] }
-        self.attackPattern = {"normal":[1,0.5,0.8]}
+        self.attackPattern = {"normal":[1,0.5,0.5]}
 
         #player attributes
         self.attributes = {
             'hp':100,
-            'mp':20,
+            'mp':100,
             'exp':0,
             'level':1,
             'money':0,
-            'strength':0,
+            'strength':10,
             'defend':0,
-            'agility':0
+            'agility':0.3
         }
-
+        #player's weapon
+        self.weapon = None
+        #player's armor
+        self.armor = None
         self.alive = True
 
     #show status
@@ -34,6 +37,19 @@ class Player:
         print()
         for key in self.attributes:
             print('{}: {}'.format(key, self.attributes[key]))
+        print()
+        if self.weapon != None:
+            print("Your weapon is: "+ str(self.weapon.name) + ".")
+        if self.armor != None:
+            print("Your armor is: "+ str(self.armor.name) + ".")
+        if len(self.attackPattern) != 1:
+            print("Your attack frequency is: " + str(self.attackPattern[str(self.weapon.name)][0]) + ".")
+            print("Your damage percentage is: " + str(self.attackPattern[str(self.weapon.name)][1]) + ".")
+            print("Your defend percentage is: " + str(self.attackPattern[str(self.weapon.name)][2]) + ".")
+        else:
+            print("Your attack frequency is: " + str(self.attackPattern['normal'][0]) + ".")
+            print("Your damage percentage is: " + str(self.attackPattern['normal'][1]) + ".")
+            print("Your defend percentage is: " + str(self.attackPattern['normal'][2]) + ".")
         print()
         input("Press enter to continue...")
         
@@ -81,7 +97,6 @@ class Player:
             print()
             input("Press enter to continue")
 
-
     #drop item
     def drop(self, item):
         self.location.addItem(item)
@@ -92,6 +107,32 @@ class Player:
         print("You have dropped {}".format(item.name))
         print()
         input("Press enter to continue...")
+
+    #equip weapon 
+    def equipW(self, weapon):
+        self.weapon = weapon
+        for k in weapon.usage:
+            self.increaseStatus(k,weapon.usage[k])
+        self.attackPattern[weapon.name] = weapon.pattern 
+
+    #unequip weapon 
+    def unequipW(self, weapon):
+        self.weapon = None 
+        for k in weapon.usage:
+            self.increaseStatus(k,-weapon.usage[k])
+        del self.attackPattern[weapon.name]
+
+    #equip armor
+    def equipA(self, armor):
+        self.armor = armor
+        for k in armor.usage:
+            self.increaseStatus(k,armor.usage[k])
+
+    #unequip armor 
+    def unequipA(self, armor):
+        self.armor = None
+        for k in armor.usage:
+            self.increaseStatus(k,-armor.usage[k])
 
     #show items in inventory
     def showInventory(self):

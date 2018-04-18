@@ -12,6 +12,9 @@ import updater
 #function to initialize world
 
 Roomlist = []
+Weaponlist = []
+Armorlist = []
+Itemlist = []
 
 #setup world
 
@@ -109,9 +112,11 @@ def createWorld():
     #set up items
     Rock = Item("Rock", "This is just a rock.", {}, 1)
     Rock.putInRoom(b1)
+    Itemlist.append(Rock)
 
     Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
     Bandage.putInRoom(c1)
+    Itemlist.append(Bandage)
 
     Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
     Bandage.putInRoom(c1)
@@ -121,24 +126,37 @@ def createWorld():
 
     Bandage1 = Item("Bandage1", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
     Bandage1.putInRoom(c1)
+    Itemlist.append(Bandage1)
 
     Bandage2 = Item("Bandage2", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
     Bandage2.putInRoom(c1)
+    Itemlist.append(Bandage2)
 
     Bandage3 = Item("Bandage3", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
     Bandage3.putInRoom(c1)
+    Itemlist.append(Bandage3)
 
     Bandage4 = Item("Bandage4", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
     Bandage4.putInRoom(c1)
+    Itemlist.append(Bandage4)
 
     Bandage5 = Item("Bandage5", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
     Bandage5.putInRoom(c1)
+    Itemlist.append(Bandage5)
 
+    Crowbar = Weapon("Crowbar", "Common Tool.", {'strength': 3}, [1, 0.60, 0.60], 1)
+    Crowbar.putInRoom(a1)
+    Weaponlist.append(Crowbar)
+
+    lilyshield = Armor("lilyshield","This is a shield made by Lily, the maker of the game.", {'defend': 10, 'strength': -2, 'agility':-0.05}, 2)
+    lilyshield.putInRoom(a1)
+    Armorlist.append(lilyshield)
+    
     #set up player's location
     player.location = hall1
 
     #set up monsters
-    Monster("Bob the monster", 20, b1)
+    Monster("Bob the monster", 20, {"normal":[1 ,5, 5]}, b1)
 
 #function to clear screen
 def clear():
@@ -179,7 +197,7 @@ def printSituation():
     for e in player.location.exitNames():
         print(e)
     print()
-    #show hel[]
+    #show help
     print("input 'help' to get more information")
     print()
 
@@ -216,11 +234,13 @@ def showHelp():
     print()
     input("Press enter to continue...")
 
-def getRoomByName(name, L):
+def getthingByName(name, L):
         for i in L:
             if i.name.lower() == name.lower():
                 return i
         return False
+
+
 
 #function def end
 
@@ -258,7 +278,7 @@ while playing and player.alive:
                 print("A huge cyclone appears and you are blowed up to the sky~")
                 input("Press enter to tranverse!")
                 destName = "hall" + str(player.location.layer + 1)
-                dest = getRoomByName(destName, Roomlist)
+                dest = getthingByName(destName, Roomlist)
                 player.location = dest
                 print()
                 print("Welcome to level "+str(player.location.layer))
@@ -331,7 +351,49 @@ while playing and player.alive:
             else:
                 print("No such item.")
                 commandSuccess = False
-            
+
+        #"equip <item_name>" --equip weapon or armor 
+        elif commandWords[0].lower() == "equip":
+            itemName = command[6:]
+            item = player.getItemByName(itemName)
+            if type(item) == Weapon:
+                if player.weapon == None:
+                    player.equipW(item)
+                else:
+                    print("You have another weapon equipped.")
+                    print("Please first unequip before equip a new weapon.")
+                    commandSuccess = False
+            elif type(item) == Armor:
+                if player.armor == None:
+                    player.equipA(item)
+                else:
+                    print("You have another armor equipped.")
+                    print("Please first unequip before equip a new armor.")
+                    commandSuccess = False
+            else:
+                print("No such item.")
+                commandSuccess = False
+
+        #"unequip <item_name>" --unequip weapon or armor 
+        elif commandWords[0].lower() == "unequip":
+            itemName = command[8:]
+            item = player.getItemByName(itemName)
+            if type(item) == Weapon:
+                if player.weapon != None:
+                    player.unequipW(item)
+                else:
+                    print("You equip nothing!")
+                    commandSuccess = False
+            elif type(item) == Armor:
+                if player.armor != None:
+                    player.unequipA(item)
+                else:
+                    print("You equip nothing!")
+                    commandSuccess = False
+            else:
+                print("No such item.")
+                commandSuccess = False
+
         #"help" --show commands instruction
         elif commandWords[0].lower() == "help":
             showHelp()

@@ -2,14 +2,14 @@ import random
 import updater
 
 class Monster:
-    def __init__(self, name, health, room):
+    def __init__(self, name, health, pattern, room):
         self.name = name
         self.health = health
         self.room = room
         room.addMonster(self)
         updater.register(self)
-        #attackPattern: [name, frequency, damage%, defense%]
-        self.attackPattern = {"normal":[1,0.5,0.5]}
+        #attackPattern: [name, frequency, damage, defend]
+        self.attackPattern = pattern
         self.fighting = False
     def update(self):
         if random.random() < .5:
