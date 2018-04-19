@@ -29,6 +29,7 @@ class Player:
         #player's armor
         self.armor = None
         self.alive = True
+        self.fighting = False
 
     #show status
     def showStatus(self):

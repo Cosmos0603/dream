@@ -1,5 +1,9 @@
 import random
 import updater
+import os
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 class Monster:
     def __init__(self, name, health, pattern, room):
@@ -21,3 +25,12 @@ class Monster:
     def die(self):
         self.room.removeMonster(self)
         updater.deregister(self)
+    #show monster's status
+    def showStatus(self):
+        clear()
+        print(str(self.name) + " Status: ")
+        print()
+        print("hp: " + str(self.health))
+        print("It has " + str(len(self.attackPattern)) + " attack pattern.")
+        print()
+        input("Press enter to continue...")

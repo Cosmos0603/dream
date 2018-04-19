@@ -6,6 +6,7 @@ from item import Armor
 from monster import Monster
 import os
 import updater
+import random
 
 #function def
 
@@ -110,53 +111,53 @@ def createWorld():
     
 
     #set up items
-    Rock = Item("Rock", "This is just a rock.", {}, 1)
+    Rock = Item("Rock", "This is just a rock.", {}, 1, False)
     Rock.putInRoom(b1)
     Itemlist.append(Rock)
 
-    Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10}, 1, True)
     Bandage.putInRoom(c1)
     Itemlist.append(Bandage)
 
-    Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10}, 1, True)
     Bandage.putInRoom(c1)
 
-    Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10}, 1, True)
     Bandage.putInRoom(c1)
 
-    Bandage1 = Item("Bandage1", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage1 = Item("Bandage1", "This is a Bandage that can increase hp.", {'hp': 10}, 1, True)
     Bandage1.putInRoom(c1)
     Itemlist.append(Bandage1)
 
-    Bandage2 = Item("Bandage2", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage2 = Item("Bandage2", "This is a Bandage that can increase hp.", {'hp': 10}, 1, True)
     Bandage2.putInRoom(c1)
     Itemlist.append(Bandage2)
 
-    Bandage3 = Item("Bandage3", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage3 = Item("Bandage3", "This is a Bandage that can increase hp.", {'hp': 10}, 1, True)
     Bandage3.putInRoom(c1)
     Itemlist.append(Bandage3)
 
-    Bandage4 = Item("Bandage4", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage4 = Item("Bandage4", "This is a Bandage that can increase hp.", {'hp': 10}, 1, True)
     Bandage4.putInRoom(c1)
     Itemlist.append(Bandage4)
 
-    Bandage5 = Item("Bandage5", "This is a Bandage that can increase hp.", {'hp': 10}, 1)
+    Bandage5 = Item("Bandage5", "This is a Bandage that can increase hp.", {'hp': 10}, 1, True)
     Bandage5.putInRoom(c1)
     Itemlist.append(Bandage5)
 
-    Crowbar = Weapon("Crowbar", "Common Tool.", {'strength': 3}, [1, 0.60, 0.60], 1)
+    Crowbar = Weapon("Crowbar", "Common Tool.", {'strength': 3}, [1, 0.60, 0.60], 1, True)
     Crowbar.putInRoom(a1)
     Weaponlist.append(Crowbar)
 
-    lilyshield = Armor("lilyshield","This is a shield made by Lily, the maker of the game.", {'defend': 10, 'strength': -2, 'agility':-0.05}, 2)
+    lilyshield = Armor("lilyshield","This is a shield made by Lily, the maker of the game.", {'defend': 10, 'strength': -2, 'agility':-0.05}, 2, True)
     lilyshield.putInRoom(a1)
     Armorlist.append(lilyshield)
-    
+
     #set up player's location
     player.location = hall1
 
     #set up monsters
-    Monster("Bob the monster", 20, {"normal":[1 ,5, 5]}, b1)
+    Monster("Bob the monster", 20, {"normal":[3 ,10, 2]}, b1)
 
 #function to clear screen
 def clear():
@@ -201,7 +202,14 @@ def printSituation():
     print("input 'help' to get more information")
     print()
 
+#function to print current fight info
+def printfight():
+    clear()
+    player.showStatus()
+    for k in player.location.monsters:
+        k.showStatus()
 
+    
 
 #helper function
 def showHelp():
@@ -222,10 +230,15 @@ def showHelp():
     print("pickup <item_name> -- pick up the item")
     print("drop <item_name> -- drop item in your inventory")
     print("use <item_name> -- use item in your inventory")
+    print("equip/unequip <item_name> -- equip/unequip a weapon or armor in your inventory")
 
     print()
     print("Monster: ")
-    print("attack <monster_name> -- attack the given monster")
+    print("fight <monster_name> -- enter the fighting mode with a certain monster")
+    print("fight mode: ")
+    print("attack -- attack the monster")
+    print("useitem -- check inventory and choose a usable item to use in a fight")
+    print("escape -- escape from the fight")
 
     print()
     print("Gameplay: ")
@@ -405,15 +418,127 @@ while playing and player.alive:
         #"observe <monster_name>" --observe certain monster
         
 
-        #"attack <monster_name>" --attack certain monster
-        elif commandWords[0].lower() == "attack":
-            targetName = command[7:]
+        #"fight <monster_name>" --fight with a certain monster
+        elif commandWords[0].lower() == "fight":
+            targetName = command[6:]
             target = player.location.getMonsterByName(targetName)
             if target != False:
-                player.attackMonster(target)
-            else:
-                print("No such monster.")
-                commandSuccess = False
+                target.fighting = True
+                player.fighting = True
+                print("You are now fighting with " + str(target.name) + ".")
+                input("Press enter to continue... ")
+                while target.fighting and player.fighting:
+                    #print fight situation 
+                    clear()
+
+                    printfight()
+                    fightcommandS  = False
+                    while not fightcommandS:
+                        fightcommandS = True    
+                        fightcommand = input("What to do?")
+                        fightcommandWords = fightcommand.split()
+                        monsterApattern = random.choice(list(target.attackPattern))
+                        print("The attack pattern of " + str(target.name) + " now is: " + str(monsterApattern))
+                        #attack the monster 
+                        if fightcommandWords[0].lower() == "attack":
+                            if len(player.attackPattern) > 1:
+                                input("HEEEEEEEE!")
+                                healthminus = (player.attackPattern[player.weapon.name][0]) * ((player.attackPattern[player.weapon.name][1]) * (player.attributes['strength']) - target.attackPattern['normal'][2] )
+                                target.health -= healthminus
+                                print()
+                                print("monster's health " + str(-healthminus))
+                                input("Press enter to continue...")
+                                if target.health <= 0:
+                                    print(target.name + " dies.")
+                                    input("Press enter to continue...")
+                                    target.die()
+                                    target.fighting =False
+                            else:
+                                input("HEEEEEEEE!")
+                                healthminus = (player.attackPattern['normal'][0]) * ((player.attackPattern['normal'][1]) * (player.attributes['strength'])- target.attackPattern['normal'][2] )
+                                target.health -= healthminus
+                                print()
+                                print("monster's health " + str(-healthminus))
+                                input("Press enter to continue...")
+                                if target.health <= 0:
+                                    print(target.name + " dies.")
+                                    input("Press enter to continue...")
+                                    target.die()
+                                    target.fighting =False
+                        #use items during a fight
+                        elif fightcommandWords[0].lower() == "useitem":
+                            if player.items != []:
+                                player.showInventory()
+                                usethisitemName = input("Which item to use?")
+                                usethisitem = player.getItemByName(usethisitemName)
+                                if usethisitem != False:
+                                    if usethisitem.fightuse != False:
+                                        if type(usethisitem) == Weapon:
+                                            if player.weapon != None:
+                                                player.unequipW(player.weapon)
+                                                player.equipW(usethisitem)
+                                            else:
+                                                player.equipW(usethisitem)
+                                        elif type(usethisitem) == Armor:
+                                            if player.armor != None:
+                                                player.unequipA(player.armor)
+                                                player.equipA(usethisitem)
+                                            else:
+                                                player.equipA(usethisitem)
+                                        else:
+                                            for u in usethisitem.usage:
+                                                if usethisitem.usage[u] != 0:
+                                                    player.increaseStatus(u, usethisitem.usage[u])
+                                                    player.deleteItem(usethisitem)
+                                    else:
+                                        print("You cannot use this item in a fight.")
+                                        fightcommandS = False
+                                else:
+                                    print("No such item.")
+                                    fightcommandS = False
+                            else:
+                                print("You have nothing, sadly.")
+                                fightcommandS = False
+                        #escape from a fight
+                        elif fightcommandWords[0].lower() == "escape":
+                            print("Run!!! Run!!!")
+                            input("Press enter to continue...")
+                            player.fighting = False
+
+                        else:
+                            print("Not a valid command in a fight.")
+                            fightcommandS = False
+
+                    #it's monster's time to attack!
+                    if target.fighting != False:
+                        print()
+                        print("It's time for " + str(target.name) + " to attack back!")
+                        input("Press enter to continue...")
+                        attackcount = target.attackPattern[monsterApattern][0]
+                        while attackcount > 0:
+                            print()
+                            input("This is attack " + str(target.attackPattern[monsterApattern][0] + 1 - attackcount))
+                            randomA = random.random()
+                            if randomA <= player.attributes['agility']:
+                                print(str(target.name) + " misses its attack~")
+                                input("Press enter to continue...")
+                            else:
+                                if player.weapon != None:
+                                    playerhealthminusperattack = target.attackPattern[monsterApattern][1] -player.attributes['defend'] * player.attackPattern[player.weapon.name][2]
+                                    if playerhealthminusperattack > 0:
+                                        player.attributes['hp'] -= playerhealthminusperattack
+                                else:
+                                    playerhealthminusperattack = target.attackPattern[monsterApattern][1] -player.attributes['defend'] * player.attackPattern['normal'][2]
+                                    if playerhealthminusperattack > 0:
+                                        player.attributes['hp'] -= playerhealthminusperattack
+                                print()
+                                if playerhealthminusperattack > 0:
+                                    print("player's health " + str(-playerhealthminusperattack))
+                                    input("Press enter to continue...")
+                                else:
+                                    print("You have awesome defend, " + str(target.name) + " cannot harm you.")
+                                    input("Press enter to continue...")
+                            attackcount -= 1        
 
         #invalid command
         else:

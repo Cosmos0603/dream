@@ -5,12 +5,13 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 class Item:
-    def __init__(self, name, desc, usage,size):
+    def __init__(self, name, desc, usage,size, fightuse):
         self.name = name
         self.desc = desc
         self.loc = None
         self.usage = usage
         self.size = size
+        self.fightuse = fightuse
 
     def describe(self):
         clear()
@@ -27,13 +28,14 @@ class Item:
         room.addItem(self)
 
 class Weapon(Item):
-    def __init__(self, name, desc, usage, pattern,size):
+    def __init__(self, name, desc, usage, pattern,size, fightuse):
         self.name = name
         self.desc = desc
         self.loc = None
         self.usage = usage
         self.pattern = pattern
         self.size = size
+        self.fightuse = fightuse
     def describe(self):
         clear()
         print("This is a weapon called " + str(self.name) + ".")
