@@ -157,7 +157,7 @@ def createWorld():
     player.location = hall1
 
     #set up monsters
-    Monster("Bob the monster", 20, {"normal":[3 ,10, 2]}, b1)
+    Monster("Bob the monster", 20, {"normal":[3 ,5, 2], "flying":[1, 10, 8]}, b1)
 
 #function to clear screen
 def clear():
@@ -443,11 +443,16 @@ while playing and player.alive:
                         if fightcommandWords[0].lower() == "attack":
                             if len(player.attackPattern) > 1:
                                 input("HEEEEEEEE!")
-                                healthminus = (player.attackPattern[player.weapon.name][0]) * ((player.attackPattern[player.weapon.name][1]) * (player.attributes['strength']) - target.attackPattern['normal'][2] )
-                                target.health -= healthminus
-                                print()
-                                print("monster's health " + str(-healthminus))
-                                input("Press enter to continue...")
+                                healthminusPER = ((player.attackPattern[player.weapon.name][1]) * (player.attributes['strength']) - target.attackPattern[monsterApattern][2] )
+                                if healthminusPER > 0:
+                                    target.health -= healthminusPER * player.attackPattern[player.weapon.name][0]
+                                    print()
+                                    print("monster's health " + str(-healthminusPER) + " * " + str(player.attackPattern[player.weapon.name][0]))
+                                    input("Press enter to continue...")
+                                else:
+                                    print()
+                                    print("Your weapon is too weak to break " + str(target.name) + "'s defense. Sad...")
+                                    input("Press enter to continue...")
                                 if target.health <= 0:
                                     print(target.name + " dies.")
                                     input("Press enter to continue...")
@@ -455,11 +460,16 @@ while playing and player.alive:
                                     target.fighting =False
                             else:
                                 input("HEEEEEEEE!")
-                                healthminus = (player.attackPattern['normal'][0]) * ((player.attackPattern['normal'][1]) * (player.attributes['strength'])- target.attackPattern['normal'][2] )
-                                target.health -= healthminus
-                                print()
-                                print("monster's health " + str(-healthminus))
-                                input("Press enter to continue...")
+                                healthminusPER = ((player.attackPattern['normal'][1]) * (player.attributes['strength'])- target.attackPattern[monsterApattern][2] )
+                                if healthminusPER > 0:
+                                    target.health -= healthminusPER * player.attackPattern['normal'][0]
+                                    print()
+                                    print("monster's health " + str(-healthminusPER) + " * " + str(player.attackPattern['normal'][0]))
+                                    input("Press enter to continue...")
+                                else:
+                                    print()
+                                    print("Your weapon is too weak to break " + str(target.name) + "'s defense. Sad...")
+                                    input("Press enter to continue...")
                                 if target.health <= 0:
                                     print(target.name + " dies.")
                                     input("Press enter to continue...")
@@ -538,6 +548,11 @@ while playing and player.alive:
                                 else:
                                     print("You have awesome defend, " + str(target.name) + " cannot harm you.")
                                     input("Press enter to continue...")
+                                if player.attributes['hp'] <= 0:
+                                    player.alive = False
+                                    player.fighting = False
+                                    print("You die.")
+                                    input("Please restart the game")
                             attackcount -= 1        
 
         #invalid command
