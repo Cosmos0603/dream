@@ -7,6 +7,7 @@ from monster import Monster
 import os
 import updater
 import random
+import pickle
 
 #function def
 
@@ -16,6 +17,7 @@ Roomlist = []
 Weaponlist = []
 Armorlist = []
 Itemlist = []
+Monsterlist = []
 
 #setup world
 
@@ -121,9 +123,11 @@ def createWorld():
 
     Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10}, 1, True)
     Bandage.putInRoom(c1)
+    Itemlist.append(Bandage)
 
     Bandage = Item("Bandage", "This is a Bandage that can increase hp.", {'hp': 10}, 1, True)
     Bandage.putInRoom(c1)
+    Itemlist.append(Bandage)
 
     Bandage1 = Item("Bandage1", "This is a Bandage that can increase hp.", {'hp': 10}, 1, True)
     Bandage1.putInRoom(c1)
@@ -157,7 +161,8 @@ def createWorld():
     player.location = hall1
 
     #set up monsters
-    Monster("Bob the monster", 20, {"normal":[3 ,5, 2], "flying":[1, 10, 8]}, b1)
+    Bob = Monster("Bob the monster", 20, {"normal":[3 ,5, 2], "flying":[1, 10, 8]}, b1)
+    Monsterlist.append(Bob)
 
 #function to clear screen
 def clear():
@@ -199,7 +204,7 @@ def printSituation():
         print(e)
     print()
     #show help
-    print("input 'help' to get more information")
+    print("enter 'help' to get more information")
     print()
 
 #function to print current fight info
@@ -243,6 +248,7 @@ def showHelp():
     print()
     print("Gameplay: ")
     print("exit -- quit the game")
+    print("save -- save the game")
 
     print()
     input("Press enter to continue...")
@@ -259,11 +265,43 @@ def getthingByName(name, L):
 
 #game start
 
+#title
+print("????\n??  ??\n??    ??\n??     ??    ??    ??    ????????    ????????      ??????????\n??     ??    ??  ??      ??    ??    ??    ??      ??  ??  ??\n??    ??     ????        ????????    ??    ??      ??  ??  ??\n??  ??       ??          ??          ??    ??      ??  ??  ??\n????         ??          ????????    ????????      ??  ??  ??\n                                            ???")
+print()
+print("Press 'new' to start a new game")
+print("Press 'load' to load your last game")
+setting = input("... ")
 #create a player
-player = Player()
-
+if setting == 'new':
+    player = Player()
 #create the world
-createWorld()
+    createWorld()
+    clear()
+    print("You wake up at the basement of a tower. We call it level 1.")
+    print("Suddenly, you realize it's a dream.")
+    input("...")
+    print("Even worse, you cannot wake yourself up in reality.")
+    input("...")
+    print("You must find a way to get out of here.")
+    input("...")
+    print("Good luck. Dreamer.")
+    input("...")
+if setting == 'load':
+
+#load game
+    Rooms = open("Rooms.pickle","rb")
+    Roomlist = pickle.load(Rooms)
+    Weapons = open("Weapons.pickle","rb")
+    Weaponlist = pickle.load(Weapons)
+    Armors = open("Armors.pickle","rb")
+    Armorlist = pickle.load(Armors)
+    Items = open("Items.pickle","rb")
+    Itemlist = pickle.load(Items)
+    Players = open("Players.pickle","rb")
+    player = pickle.load(Players)
+    Monsters = open("Monsters.pickle","rb")
+    Monsterlist = pickle.load(Monsters)
+
 playing = True
 while playing and player.alive:
 
@@ -415,6 +453,26 @@ while playing and player.alive:
         elif commandWords[0].lower() == "exit":
             playing = False
 
+        #'save' --save game
+        elif commandWords[0].lower() == "save":
+            Rooms = open("Rooms.pickle","wb")
+            pickle.dump(Roomlist, Rooms)
+            Rooms.close()
+            Weapons = open("Weapons.pickle","wb")
+            pickle.dump(Weaponlist, Weapons)
+            Weapons.close()
+            Armors = open("Armors.pickle","wb")
+            pickle.dump(Armorlist, Armors)
+            Armors.close()
+            Items = open("Items.pickle","wb")
+            pickle.dump(Itemlist, Items)
+            Items.close()
+            Players = open("Players.pickle","wb")
+            pickle.dump(player, Players)
+            Players.close()
+            Monsters = open("Monsters.pickle","wb")
+            pickle.dump(Monsterlist, Monsters)
+            Monsters.close()
         #"observe <monster_name>" --observe certain monster
         
 
